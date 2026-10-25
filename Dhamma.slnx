@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Dhamma.Ai/Dhamma.Ai.csproj" />
+    <Project Path="src/Dhamma.Chat/Dhamma.Chat.csproj" />
+    <Project Path="src/Dhamma.Contracts/Dhamma.Contracts.csproj" />
+    <Project Path="src/Dhamma.Core/Dhamma.Core.csproj" />
+    <Project Path="src/Dhamma.Infrastructure/Dhamma.Infrastructure.csproj" />
+  </Folder>
+</Solution>

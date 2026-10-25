@@ -1,0 +1,43 @@
+**/.dockerignore
+**/.env
+**/.git
+**/.gitignore
+**/.project
+**/.settings
+**/.toolstarget
+**/.vs
+**/.vscode
+**/.idea
+**/*.*proj.user
+**/*.dbmdl
+**/*.jfm
+**/azds.yaml
+**/bin
+**/charts
+**/docker-compose*
+**/Dockerfile*
+**/node_modules
+**/npm-debug.log
+**/obj
+**/secrets.dev.yaml
+**/values.dev.yaml
+LICENSE
+README.md
+# 비밀·환경 설정 (공개 이미지에 실리면 안 되는 것들)
+**/.env*
+**/appsettings.Development.json
+**/appsettings.*.local.json
+**/secrets.json
+**/*.pfx
+**/*.pem
+**/*.key
+
+# macOS와 빌드 부산물
+**/.DS_Store
+**/TestResults
+**/*.log
+
+# 이미지에 필요 없는 저장소 자료
+**/k8s
+**/docs
+**/.github
