@@ -11,18 +11,31 @@ public class OllamaChatClient(HttpClient http, IOptions<OllamaOptions> options)
 {
     public async IAsyncEnumerable<AnswerChunk> StreamAsync(
         string question,
+        IReadOnlyList<ChatTurn> history,
         [EnumeratorCancellation] CancellationToken ct)
     {
+        var messages = new List<object>
+        {
+            new { role = "system", content = options.Value.SystemPrompt }
+        };
+
+        foreach (var turn in history)
+        {
+            messages.Add(new
+            {
+                role = turn.Role == ChatRole.User ? "user" : "assistant",
+                content = turn.Content
+            });
+        }
+
+        messages.Add(new { role = "user", content = question });
+
         var body = new
         {
             model = options.Value.Model,
             stream = true,
             think = options.Value.Think,
-            messages = new object[]
-            {
-                new { role = "system", content = options.Value.SystemPrompt },
-                new { role = "user",   content = question }
-            }
+            messages
         };
 
         using var request = new HttpRequestMessage(HttpMethod.Post, "/api/chat")

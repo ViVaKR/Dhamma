@@ -8,6 +8,11 @@ service ChatService {
   rpc Ask(AskRequest) returns (stream AskResponse);
 }
 
+message ChatMesage {
+  string role = 1; // "user" | "assistant"
+  string content = 2;
+}
+
 message AskRequest {
   string question = 1; // 지금 질문
   repeated ChatMesage history = 2; // 이전 대화 (오래된것 -> 최신 순)
@@ -16,9 +21,4 @@ message AskRequest {
 message AskResponse {
   string text = 1;
   bool is_thinking = 2; // true면 사고 과정 토큰
-}
-
-message ChatMesage {
-  string tole = 1; // "user" | "assistant"
-  string content = 2;
 }

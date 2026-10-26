@@ -37,12 +37,30 @@ dhamma/
 ## 테스트
 
 ```bash
+
+# terminal 1
 dotnet run --project src/Dhamma.Ai/Dhamma.Ai.csproj
+# terminal 2
 dotnet run --project src/Dhamma.Chat/Dhamma.Chat.csproj
 
+
+# 1. 최초 질문
 curl -N -X POST "http://localhost:5186/api/chat?thinking=true" \
   -H "Content-Type: application/json" \
   -d '{"question":"색즉시공에 대하여 설명 부탁해"}'
+
+# 2. 이력 포함
+curl -N -X POST "http://localhost:5186/api/chat" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "방금 설명한 내용을 한 줄로 요약해줘",
+    "history": [
+      {"role": "user", "content": "색즉시공에 대하여 설명 부탁해"},
+      {"role": "assistant", "content": "색즉시공은 형상이 곧 공이라는 뜻으로, 모든 현상에 고정된 실체가 없음을 말합니다."}
+    ]
+  }'
+
+
 
 # thinking 과정이 즉시 나온후 대답이 표현
 # thinking = true
