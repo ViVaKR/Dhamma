@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Dhamma.Chat.Hubs;
 
+public sealed record ChatChunk(string Text, bool IsThinking);
+
 public class ChatHub(ChatService.ChatServiceClient ai) : Hub
 {
     public async IAsyncEnumerable<string> Ask(

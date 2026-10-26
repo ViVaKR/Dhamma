@@ -11,9 +11,11 @@ public sealed class ChatGrpcService(IAnswerStreamer answers) : ChatService.ChatS
         IServerStreamWriter<AskResponse> stream,
         ServerCallContext ctx)
     {
-        await foreach (var token in answers.StreamAsync(request.Question, ctx.CancellationToken))
+        await foreach (var chunk in answers.StreamAsync(request.Question, ctx.CancellationToken))
         {
-            await stream.WriteAsync(new AskResponse { Text = token }, ctx.CancellationToken);
+            await stream.WriteAsync(
+                new AskResponse { Text = chunk.Text, IsThinking = chunk.IsThinking },
+                ctx.CancellationToken);
         }
     }
 }

@@ -10,8 +10,7 @@
     <PackageReference Include="Google.Protobuf" Version="3.36.2" />
     <PackageReference Include="Grpc.Core.Api" Version="2.84.0" />
     <PackageReference Include="Grpc.Tools" Version="2.84.0" PrivateAssets="All" />
-
-    <Protobuf Include="Protos\dhamma\ai\v1\chat.proto" ProtoRoot="Protos" GrpcServices="Both" />
-    <Protobuf Include="Protos\external\buddham\ai.proto" ProtoRoot="Protos\external\buddham" GrpcServices="Client" />
+    <Protobuf Include="Protos/dhamma/chat.proto" ProtoRoot="Protos" GrpcServices="Both" />
   </ItemGroup>
+
 </Project>
