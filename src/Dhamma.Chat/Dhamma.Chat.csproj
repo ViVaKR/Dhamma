@@ -15,7 +15,8 @@
 
   <ItemGroup>
     <!-- 오직 Contracts 프로젝트를 통해서만 계약을 공유받습니다! (로컬 .proto 직접 컴파일 원천 차단) -->
-    <ProjectReference Include="..\Dhamma.Contracts\Dhamma.Contracts.csproj" />
+    <ProjectReference Include="..\Dhamma.Core\Dhamma.Core.csproj" />
+    <ProjectReference Include="..\Dhamma.Infrastructure\Dhamma.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

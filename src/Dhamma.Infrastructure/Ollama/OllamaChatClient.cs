@@ -9,15 +9,9 @@ namespace Dhamma.Infrastructure.Ollama;
 
 public class OllamaChatClient(HttpClient http, IOptions<OllamaOptions> options)
 {
-    public async IAsyncEnumerable<AnswerChunk> StreamAsync(
-        string question,
-        IReadOnlyList<ChatTurn> history,
-        [EnumeratorCancellation] CancellationToken ct)
+    public async IAsyncEnumerable<AnswerChunk> StreamAsync(string question, IReadOnlyList<ChatTurn> history, [EnumeratorCancellation] CancellationToken ct)
     {
-        var messages = new List<object>
-        {
-            new { role = "system", content = options.Value.SystemPrompt }
-        };
+        var messages = new List<object> { new { role = "system", content = options.Value.SystemPrompt } };
 
         foreach (var turn in history)
         {
@@ -44,6 +38,7 @@ public class OllamaChatClient(HttpClient http, IOptions<OllamaOptions> options)
         };
 
         using var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+
         response.EnsureSuccessStatusCode();
 
         using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(ct));
@@ -53,6 +48,7 @@ public class OllamaChatClient(HttpClient http, IOptions<OllamaOptions> options)
             if (line.Length == 0) continue;
 
             using var doc = JsonDocument.Parse(line);
+
             var root = doc.RootElement;
 
             if (root.TryGetProperty("message", out var m))

@@ -2,12 +2,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dhamma.Core\Dhamma.Core.csproj" />
+    <ProjectReference Include="..\Dhamma.Contracts\Dhamma.Contracts.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.13" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.84.0" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -2,23 +2,101 @@ syntax = "proto3";
 
 package dhamma;
 
+// 그대로 네임스페이스가 됨
+// namespace Dhamma.Contracts.Ai (그대로 네임스페이스가 됨)
 option csharp_namespace = "Dhamma.Contracts.Ai";
 
+// ChatService (static 외곽 클래스, 서비스 이름 그대로)
+// ChatService.ChatServiceBase, {서비스명}Base, (서버용 추상 클래스)
+// ChatService.ChatServiceClient, {서비스명}Client (클라이언트용)
 service ChatService {
+  // Ask / AskAsync, 메서드명 그대로 (+클라이언트는 Async 로 붙음)
   rpc Ask(AskRequest) returns (stream AskResponse);
 }
 
-message ChatMesage {
+message ChatMessage {
   string role = 1; // "user" | "assistant"
   string content = 2;
 }
 
+// class AskRequest, 메시지 이름 그대로
 message AskRequest {
+  // string Question
+  // snake_case -> PascalCase
   string question = 1; // 지금 질문
-  repeated ChatMesage history = 2; // 이전 대화 (오래된것 -> 최신 순)
+
+  // RepeatedField<ChatMessage> History
+  // repeated -. RepeatedField<T>
+  repeated ChatMessage history = 2; // 이전 대화 (오래된것 -> 최신 순)
 }
 
 message AskResponse {
   string text = 1;
+
+  // bool IsThinking
+  // is_think -> IsThinking
   bool is_thinking = 2; // true면 사고 과정 토큰
 }
+
+/*
+   [중첩클래스]
+   namespace Dhamma.Contracts.Ai
+   {
+       public static partial class ChatService              // 외곽 (static)
+       {
+           public abstract partial class ChatServiceBase     // 서버가 상속
+           {
+               public virtual Task Ask(
+                   AskRequest request,
+                   IServerStreamWriter<AskResponse> responseStream,
+                   ServerCallContext context) { ... }
+           }
+
+           public partial class ChatServiceClient : ClientBase<ChatServiceClient>  // 클라이언트가 주입받아 호출
+           {
+               public virtual AsyncServerStreamingCall<AskResponse> Ask(
+                   AskRequest request, CallOptions options) { ... }
+           }
+       }
+   }
+
+*/
+
+/* 사용하는 쪽 코드
+    // 서버 - Base 를 상속하고 Ask를 override
+   [Dhamma.Ai]
+   public class ChatGrpcService : ChatService.ChatServiceBase
+   {
+       public override async Task Ask(
+           AskRequest request,
+           IServerStreamWriter<AskResponse> responseStream,
+           ServerCallContext context)
+       {
+           // history는 RepeatedField<ChatMessage> 이므로 foreach 가능
+           foreach (var m in request.History) {
+             m.Role,
+             m.Content
+           }
+
+           await responseStream.WriteAsync(new AskResponse
+           {
+               Text = "생각 중...",
+               IsThinking = true   // is_thinking → IsThinking
+           });
+       }
+   }
+
+   // 클라이언트 - Client를 DI 로 주입받아 호출
+   [Dhamma.Chat]
+
+   // Program.cs
+   builder.Services.AddGrpcClient<ChatService.ChatServiceClient>(o => o.Address = new Uri("https://localhost:5001"));
+
+   // ChatHub / ChatController
+   var call = _client.Ask(new AskRequest { Question = q });
+   await foreach (var res in call.ResponseStream.ReadAllAsync())
+   {
+       // res.Text, res.IsThinking → SignalR로 전달
+   }
+
+*/

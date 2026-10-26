@@ -44,6 +44,21 @@ dotnet run --project src/Dhamma.Ai/Dhamma.Ai.csproj
 dotnet run --project src/Dhamma.Chat/Dhamma.Chat.csproj
 
 
+ID="11111111-1111-1111-1111-111111111111"
+
+# 1턴
+curl -N -X POST "http://localhost:5186/api/chat" \
+  -H "Content-Type: application/json" \
+  -d "{\"conversationId\":\"$ID\",\"question\":\"색즉시공에 대하여 설명 부탁해\"}"
+
+# 2턴 (같은 ID)
+curl -N -X POST "http://localhost:5186/api/chat" \
+  -H "Content-Type: application/json" \
+  -d "{\"conversationId\":\"$ID\",\"question\":\"방금 설명한 내용을 한 줄로 요약해줘\"}"
+
+
+#-------------------------------------------------------------------------------
+
 # 1. 최초 질문
 curl -N -X POST "http://localhost:5186/api/chat?thinking=true" \
   -H "Content-Type: application/json" \
