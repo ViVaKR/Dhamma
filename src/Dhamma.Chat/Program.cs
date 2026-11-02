@@ -12,8 +12,8 @@ builder.Services.AddCors(x => x.AddDefaultPolicy(p => p
     .AllowCredentials()));
 
 // gRPC 클라이언트 + IAnswerStreamer + IConversationStore 를 한 번에 등록
-builder.Services.AddDhammaChatInfrastructure(
-    builder.Configuration["Services:Ai:Address"] ?? "http://localhost:5100");
+builder.Services.AddDhammaChatInfrastructure(builder.Configuration["Services:Ai:Address"] ?? "http://localhost:5100");
+
 builder.Services.AddSingleton<IConversationStore, InMemoryConversationStore>();
 builder.Services.AddScoped<ChatOrchestrator>();
 

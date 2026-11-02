@@ -26,7 +26,7 @@ message AskRequest {
   string question = 1; // 지금 질문
 
   // RepeatedField<ChatMessage> History
-  // repeated -. RepeatedField<T>
+  // repeated -> RepeatedField<T>
   repeated ChatMessage history = 2; // 이전 대화 (오래된것 -> 최신 순)
 }
 
@@ -42,9 +42,11 @@ message AskResponse {
    [중첩클래스]
    namespace Dhamma.Contracts.Ai
    {
-       public static partial class ChatService              // 외곽 (static)
+      // 외곽 (static)
+       public static partial class ChatService
        {
-           public abstract partial class ChatServiceBase     // 서버가 상속
+           // 서버가 상속받아 구축
+           public abstract partial class ChatServiceBase
            {
                public virtual Task Ask(
                    AskRequest request,
@@ -52,7 +54,8 @@ message AskResponse {
                    ServerCallContext context) { ... }
            }
 
-           public partial class ChatServiceClient : ClientBase<ChatServiceClient>  // 클라이언트가 주입받아 호출
+           // 클라이언트가 주입받아 호출 로직 구축
+           public partial class ChatServiceClient : ClientBase<ChatServiceClient>
            {
                public virtual AsyncServerStreamingCall<AskResponse> Ask(
                    AskRequest request, CallOptions options) { ... }

@@ -14,6 +14,7 @@ public sealed class GrpcAnswerStreamer(ChatService.ChatServiceClient ai) : IAnsw
         [EnumeratorCancellation] CancellationToken ct)
     {
         var req = new AskRequest { Question = question };
+
         foreach (var turn in history)
         {
             req.History.Add(new ChatMessage
@@ -26,6 +27,8 @@ public sealed class GrpcAnswerStreamer(ChatService.ChatServiceClient ai) : IAnsw
         using var call = ai.Ask(req, cancellationToken: ct);
 
         await foreach (var r in call.ResponseStream.ReadAllAsync(ct))
+        {
             yield return new AnswerChunk(r.Text, r.IsThinking);
+        }
     }
 }

@@ -9,8 +9,7 @@ namespace Dhamma.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddDhammaChatInfrastructure(
-        this IServiceCollection services, string aiAddress)
+    public static IServiceCollection AddDhammaChatInfrastructure(this IServiceCollection services, string aiAddress)
     {
         services.AddGrpcClient<ChatService.ChatServiceClient>(o => o.Address = new Uri(aiAddress));
         services.AddScoped<IAnswerStreamer, GrpcAnswerStreamer>();

@@ -6,7 +6,7 @@ namespace Dhamma.Ai.Services;
 
 public sealed class ChatGrpcService(IAnswerStreamer answers) : ChatService.ChatServiceBase
 {
-    private const int MaxHistory = 20; // 최근 20개 메시지만 사용
+    private const int MaxHistory = 20;
     public override async Task Ask(
         AskRequest request,
         IServerStreamWriter<AskResponse> stream,
